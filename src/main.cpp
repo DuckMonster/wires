@@ -19,7 +19,7 @@ bool key_event(SDL_Scancode key, bool pressed, bool repeat)
 
 void main()
 {
-	console.open(75, 50);
+	console.open(75, 40);
 	console.push_key_handler(key_event);
 
 	editor.enter();

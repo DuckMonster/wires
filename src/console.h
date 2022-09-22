@@ -27,10 +27,10 @@ public:
 
 	void clear();
 
-	void set_glyph(u32 x, u32 y, char chr, u32 fg, u32 bg) { glyphs[x + y * cols] = { chr, fg, bg }; }
-	Glyph& get_glyph(u32 x, u32 y) { return glyphs[x + y * cols]; }
+	void set_glyph(Point point, char chr, u32 fg, u32 bg) { glyphs[point.x + point.y * cols] = { chr, fg, bg }; }
+	Glyph& get_glyph(Point point) { return glyphs[point.x + point.y * cols]; }
 
-	void write_string(u32 x, u32 y, const char* string, u32 fg, u32 bg);
+	void write_string(Point point, const char* string, u32 fg, u32 bg);
 
 	void push_key_handler(key_handle_func func) { key_handler_stack[num_key_handlers++] = func; }
 	void push_char_handler(char_handle_func func) { char_handler_stack[num_char_handlers++] = func; }

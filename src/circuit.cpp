@@ -1,5 +1,6 @@
 #include "circuit.h"
 #include "console.h"
+#include "palette.h"
 
 void Circuit::step()
 {
@@ -21,39 +22,24 @@ void Circuit::draw()
 			if ((col * row) % 5 == 0)
 				glyph = '.';
 
-			console.set_glyph(col, row, glyph, 0x303055, 0x202035);
+			console.set_glyph(Point(col, row), glyph, PAL_BLUEPRINT_FG, PAL_BLUEPRINT_BG);
 		}
 	}
 
 	// --- Draw parts ---
+	for(Part* part : parts)
+	{
+		Glyph& glyph = console.get_glyph(part->position);
+		glyph.chr = part->chr;
+		glyph.fg = part->state ? PAL_PART_ACTIVE : PAL_PART_INACTIVE;
+	}
+
 	// Nodes
-	for(Node& node : nodes)
-	{
-		Glyph& glyph = console.get_glyph(node.x, node.y);
-		glyph.chr = '*';
-		glyph.fg = node.state ? 0xFF8080 : 0x808080;
-	}
-
-	// Draw connections
-	for(Connection& connection : connections)
-	{
-		Node* a = connection.a;
-		Node* b = connection.b;
-
-		draw_wire(a->x, a->y, b->x, b->y);
-	}
-
-	// Inverter
-	for(Inverter& inv : inverters)
-	{
-		Glyph& glyph = console.get_glyph(inv.x, inv.y);
-		glyph.chr = '>';
-		glyph.fg = inv.state ? 0xFF8080 : 0x808080;
-	}
 }
 
-void Circuit::draw_wire(i32 x1, i32 y1, i32 x2, i32 y2)
+void Circuit::draw_wire(Point from, Point to)
 {
+	/*
 	i32 delta_x = x2 - x1;
 	i32 delta_y = y2 - y1;
 
@@ -81,4 +67,5 @@ void Circuit::draw_wire(i32 x1, i32 y1, i32 x2, i32 y2)
 			glyph.fg = 0x808080;
 		}
 	}
+	*/
 }

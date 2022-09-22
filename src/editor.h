@@ -16,9 +16,8 @@ private:
 
 	Circuit circuit;
 
-	i32 cursor_x = 0;
-	i32 cursor_y = 0;
-	void set_cursor(i32 x, i32 y);
+	Point cursor;
+	void set_cursor(Point position);
 
 	// Connection stuff
 	void begin_connection(Node* source) { connection_src = source; }

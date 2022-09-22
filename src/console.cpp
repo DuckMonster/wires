@@ -126,12 +126,12 @@ void Console::set_color(u32 fg, u32 bg)
 	SDL_SetTextureColorMod(glyph_atlas, (fg >> 16) & 0xFF, (fg >> 8) & 0xFF, (fg) & 0xFF);
 }
 
-void Console::write_string(u32 x, u32 y, const char* string, u32 fg, u32 bg)
+void Console::write_string(Point point, const char* string, u32 fg, u32 bg)
 {
 	while(*string)
 	{
-		set_glyph(x, y, *string, fg, bg);
-		x++;
+		set_glyph(point, *string, fg, bg);
+		point.x++;
 		string++;
 	}
 }

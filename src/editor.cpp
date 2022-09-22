@@ -1,5 +1,6 @@
 #include "editor.h"
 #include "console.h"
+#include "palette.h"
 
 Editor editor;
 
@@ -11,57 +12,49 @@ bool Editor::handle_key(SDL_Scancode key, bool pressed, bool repeat)
 	{
 		if (key == SDL_SCANCODE_H)
 		{
-			set_cursor(cursor_x - 1, cursor_y);
+			set_cursor(cursor + Point(-1, 0));
 			return true;
 		}
 		if (key == SDL_SCANCODE_J)
 		{
-			set_cursor(cursor_x, cursor_y + 1);
+			set_cursor(cursor + Point(0, 1));
 			return true;
 		}
 		if (key == SDL_SCANCODE_K)
 		{
-			set_cursor(cursor_x, cursor_y - 1);
+			set_cursor(cursor + Point(0, -1));
 			return true;
 		}
 		if (key == SDL_SCANCODE_L)
 		{
-			set_cursor(cursor_x + 1, cursor_y);
+			set_cursor(cursor + Point(1, 0));
 			return true;
 		}
 	}
 
 	// Part creation
-	if (pressed && !repeat)
+	if (pressed)
 	{
-		if (!is_building_connection())
+		if (key == SDL_SCANCODE_W)
 		{
-			bool space_empty = (circuit.find_part_at(cursor_x, cursor_y) == nullptr);
-			if (space_empty)
-			{
-				if (key == SDL_SCANCODE_W)
-				{
-					Node* node = circuit.add_node(cursor_x, cursor_y);
-					begin_connection(node);
-					return true;
-				}
+			if (circuit.find_part_at(cursor) == nullptr)
+				circuit.add_part<Node>(cursor);
 
-				if (key == SDL_SCANCODE_I)
-				{
-					circuit.add_inverter(cursor_x, cursor_y);
-					return true;
-				}
-			}
+			return true;
 		}
-		else
+		if (key == SDL_SCANCODE_I)
 		{
-			if (key == SDL_SCANCODE_W)
-			{
-				Node* target = circuit.add_node(cursor_x, cursor_y);
-				circuit.connect_nodes(connection_src, target);
+			if (circuit.find_part_at(cursor) == nullptr)
+				circuit.add_part<Inverter>(cursor);
 
-				connection_src = nullptr;
-			}
+			return true;
+		}
+
+		if (key == SDL_SCANCODE_X)
+		{
+			Part* part = circuit.find_part_at(cursor);
+			if (part)
+				circuit.delete_part(part);
 		}
 	}
 
@@ -85,17 +78,16 @@ void Editor::draw()
 	// Draw connection building
 	if (is_building_connection())
 	{
-		circuit.draw_wire(connection_src->x, connection_src->y, cursor_x, cursor_y);
+		circuit.draw_wire(connection_src->position, cursor);
 	}
 
 	// Highlight cursor
-	Glyph& glyph = console.get_glyph(cursor_x, cursor_y);
-	glyph.fg = 0x252525;
-	glyph.bg = 0xEEEEEE;
+	Glyph& glyph = console.get_glyph(cursor);
+	glyph.fg = PAL_CURSOR_FG;
+	glyph.bg = PAL_CURSOR_BG;
 }
 
-void Editor::set_cursor(i32 x, i32 y)
+void Editor::set_cursor(Point position)
 {
-	cursor_x = x;
-	cursor_y = y;
+	cursor = position;
 }

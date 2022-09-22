@@ -21,7 +21,7 @@
   <!-- PROPERTIES -->
   <PropertyGroup>
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <OutDir>bin\</OutDir>
     <IntDir>build\</IntDir>
     <TargetName>game_$(Configuration)</TargetName>

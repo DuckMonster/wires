@@ -4,6 +4,7 @@
 
 void Node::evaluate()
 {
+	/*
 	circuit->mark_dirty_at(x + 1, y);
 
 	Inverter* inv = circuit->find_inverter_at(x - 1, y);
@@ -14,4 +15,5 @@ void Node::evaluate()
 	}
 
 	state = inv->state;
+	*/
 }

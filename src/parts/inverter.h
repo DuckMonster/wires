@@ -3,5 +3,7 @@
 
 class Inverter : public Part
 {
+	PART_TYPE(Inverter, '>')
+
 	void evaluate() override;
 };
