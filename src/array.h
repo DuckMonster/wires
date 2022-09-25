@@ -144,6 +144,16 @@ public:
 		return _data[_count - 1];
 	}
 
+	void append(const Array<T>& other)
+	{
+		ensure_capacity(_count + other._count);
+
+		for(u32 i = _count; i < _count + other._count; ++i)
+			new(_data + i) T(other[i - _count]);
+
+		_count += other._count;
+	}
+
 	bool remove(const T& item)
 	{
 		u32 index = find(item);

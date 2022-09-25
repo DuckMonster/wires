@@ -1,19 +1,20 @@
 #include "node.h"
 #include "inverter.h"
 #include "circuit.h"
+#include <stdio.h>
+
+void Node::on_create()
+{
+	network = circuit->add_network();
+	network->add_node(this);
+}
+
+void Node::on_delete()
+{
+	network->remove_node(this);
+}
 
 void Node::evaluate()
 {
-	/*
-	circuit->mark_dirty_at(x + 1, y);
-
-	Inverter* inv = circuit->find_inverter_at(x - 1, y);
-	if (!inv)
-	{
-		state = false;
-		return;
-	}
-
-	state = inv->state;
-	*/
+	network->evaluate();
 }

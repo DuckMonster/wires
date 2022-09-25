@@ -30,5 +30,7 @@ public:
 
 	bool state;
 
+	virtual void on_create() {}
+	virtual void on_delete() {}
 	virtual void evaluate() { }
 };

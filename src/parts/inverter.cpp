@@ -3,8 +3,8 @@
 
 void Inverter::evaluate()
 {
-	circuit->mark_dirty_at(x + 1, y);
-	Part* host_part = circuit->find_part_at(x - 1, y);
+	circuit->mark_dirty_at(position.right());
+	Part* host_part = circuit->find_part_at(position.left());
 
 	// No host part, default to on
 	if (host_part == nullptr)
@@ -14,5 +14,4 @@ void Inverter::evaluate()
 	}
 
 	state = !host_part->state;
-	circuit->mark_dirty_at(x + 1, y);
 }

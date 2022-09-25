@@ -34,38 +34,42 @@ void Circuit::draw()
 		glyph.fg = part->state ? PAL_PART_ACTIVE : PAL_PART_INACTIVE;
 	}
 
-	// Nodes
+	// --- Draw networks ---
+	for(Node_Network* network : networks)
+	{
+		for(auto& connection : network->connections)
+		{
+			draw_wire(connection.a->position, connection.b->position, network->state ? PAL_PART_ACTIVE : PAL_PART_INACTIVE);
+		}
+	}
 }
 
-void Circuit::draw_wire(Point from, Point to)
+void Circuit::draw_wire(Point from, Point to, u32 color)
 {
-	/*
-	i32 delta_x = x2 - x1;
-	i32 delta_y = y2 - y1;
+	Point delta = to - from;
 
-	if (Math::abs(delta_x) > Math::abs(delta_y))
+	if (Math::abs(delta.x) > Math::abs(delta.y))
 	{
-		i32 min = Math::min(x1, x2);
-		i32 max = Math::max(x1, x2);
+		i32 min = Math::min(from.x, to.x);
+		i32 max = Math::max(from.x, to.x);
 
 		for(i32 x = min + 1; x < max; ++x)
 		{
-			Glyph& glyph = console.get_glyph(x, y1);
+			Glyph& glyph = console.get_glyph(Point(x, from.y));
 			glyph.chr = '-';
-			glyph.fg = 0x808080;
+			glyph.fg = color;
 		}
 	}
 	else
 	{
-		i32 min = Math::min(y1, y2);
-		i32 max = Math::max(y1, y2);
+		i32 min = Math::min(from.y, to.y);
+		i32 max = Math::max(from.y, to.y);
 
 		for(i32 y = min + 1; y < max; ++y)
 		{
-			Glyph& glyph = console.get_glyph(x1, y);
+			Glyph& glyph = console.get_glyph(Point(from.x, y));
 			glyph.chr = '|';
-			glyph.fg = 0x808080;
+			glyph.fg = color;
 		}
 	}
-	*/
 }
